@@ -8,12 +8,9 @@ public abstract class MapSite {
     private int x;
     private int y;  // współrzędne
 
-    public MapSite(int x, int y){
+    public MapSite(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-    public MapSite(){
-
     }
 
     public int getX() {
@@ -34,7 +31,7 @@ public abstract class MapSite {
 
     public static int LENGTH = 30;   // długość boku pokoju
     /**
-     * Służy do rysowania
+     * Słyży do rysowania
      * @param image
      */
     public void draw(Image image) {}

@@ -23,8 +23,9 @@ public class App extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 image = panel.getImage();
-               drawMaze();
-               panel.repaint();   // odświeżenie panelu - odrysowanie labiryntu
+//                drawMaze();
+                drawMazesUsingBuilder();
+                panel.repaint();   // odświeżenie panelu - odrysowanie labiryntu
             }
         });
         setLayout((new BorderLayout())); // ustawiamy menedżera rozkładu dla JFrame
@@ -36,29 +37,105 @@ public class App extends JFrame
     }
 
     public void drawMaze() {
-//       Wall wall = new Wall(Directions.East);
-//       wall.setX(50);
-//       wall.setY(100);
-//       wall.draw(image);
+        Wall wall = new Wall(Directions.East);
+        wall.setX(50);
+        wall.setY(100);
+        //wall.draw(image);
 
-        int x = 50;
-        int y =100;
-
-        Room room1 = new Room(1,x,y);
-        room1.setSide(Directions.East, new Wall(Directions.East));
+        Room room1 = new Room(1,50,100);
         room1.setSide(Directions.North, new Wall(Directions.North));
-        room1.setSide(Directions.West, new Wall(Directions.West));
+        room1.setSide(Directions.East, new Wall(Directions.East));
         room1.setSide(Directions.South, new Wall(Directions.South));
+        room1.setSide(Directions.West, new Wall(Directions.West));
 
-        Room room2 = new Room(2, x,y+ MapSite.LENGTH);
-        room2.setSide(Directions.East, new Wall(Directions.East));
+        Room room2 = new Room(2,50,100 + MapSite.LENGTH);
         room2.setSide(Directions.North, new Wall(Directions.North));
-        room2.setSide(Directions.West, new Wall(Directions.West));
+        room2.setSide(Directions.East, new Wall(Directions.East));
         room2.setSide(Directions.South, new Wall(Directions.South));
+        room2.setSide(Directions.West, new Wall(Directions.West));
 
-        Door door = new Door(room1,room2, true);
+        Room room3 = new Room(3,50,100 + 2*MapSite.LENGTH);
+        room3.setSide(Directions.North, new Wall(Directions.North));
+        room3.setSide(Directions.East, new Wall(Directions.East));
+        room3.setSide(Directions.South, new Wall(Directions.South));
+        room3.setSide(Directions.West, new Wall(Directions.West));
+
+        Room room4 = new Room(4,50 + MapSite.LENGTH,100 + MapSite.LENGTH);
+        room4.setSide(Directions.North, new Wall(Directions.North));
+        room4.setSide(Directions.East, new Wall(Directions.East));
+        room4.setSide(Directions.South, new Wall(Directions.South));
+        room4.setSide(Directions.West, new Wall(Directions.West));
+
+        Room room5 = new Room(5,50 + 2*MapSite.LENGTH,100);
+        room5.setSide(Directions.North, new Wall(Directions.North));
+        room5.setSide(Directions.East, new Wall(Directions.East));
+        room5.setSide(Directions.South, new Wall(Directions.South));
+        room5.setSide(Directions.West, new Wall(Directions.West));
+
+        Room room6 = new Room(6,50 + 2*MapSite.LENGTH,100 + MapSite.LENGTH);
+        room6.setSide(Directions.North, new Wall(Directions.North));
+        room6.setSide(Directions.East, new Wall(Directions.East));
+        room6.setSide(Directions.South, new Wall(Directions.South));
+        room6.setSide(Directions.West, new Wall(Directions.West));
+
+        Room room7 = new Room(7,50 + 2*MapSite.LENGTH,100 + 2*MapSite.LENGTH);
+        room7.setSide(Directions.North, new Wall(Directions.North));
+        room7.setSide(Directions.East, new Wall(Directions.East));
+        room7.setSide(Directions.South, new Wall(Directions.South));
+        room7.setSide(Directions.West, new Wall(Directions.West));
+
+        Room room8 = new Room(8,50 + 3*MapSite.LENGTH,100 + MapSite.LENGTH);
+        room8.setSide(Directions.North, new Wall(Directions.North));
+        room8.setSide(Directions.East, new Wall(Directions.East));
+        room8.setSide(Directions.South, new Wall(Directions.South));
+        room8.setSide(Directions.West, new Wall(Directions.West));
+        
+        Door door1 = new Door(room1,room2,false);
+        Door door2 = new Door(room2,room3,false);
+        Door door3 = new Door(room2,room4,true);
+        Door door4 = new Door(room4,room6,true);
+        Door door5 = new Door(room6,room5,false);
+        Door door6 = new Door(room6,room7,false);
+        Door door7 = new Door(room6,room8,true);
+
+        Maze maze = new Maze();
+        maze.addRoom(room1);
+        maze.addRoom(room2);
+        maze.addRoom(room3);
+        maze.addRoom(room4);
+        maze.addRoom(room5);
+        maze.addRoom(room6);
+        maze.addRoom(room7);
+        maze.addRoom(room8);
+        maze.draw(image);
+
+/*
         room1.draw(image);
         room2.draw(image);
+        room3.draw(image);
+        room4.draw(image);
+        room5.draw(image);
+        room6.draw(image);
+        room7.draw(image);
+        room8.draw(image);
+*/
+    }
+
+
+    public void drawMazesUsingBuilder() {
+        Director director = new Director();
+        MazeBuilder builder1 = new ConcreateBuilderLevel1();
+        MazeBuilder builder2 = new ConcreateBuilderLevel1();
+
+        image = panel.getImage();
+
+        director.createMaze(builder1);
+        Maze maze1 = builder1.getMaze();
+        maze1.draw(image);
+
+        director.createMazeWithOffset(builder2, 400);
+        Maze maze2 = builder2.getMaze();
+        maze2.draw(image);
     }
 
 
