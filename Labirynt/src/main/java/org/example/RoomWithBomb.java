@@ -21,21 +21,48 @@ public class RoomWithBomb extends Room{
 
     public void setDetonated(){
         if (isBomb) {
-            isDetonated = true;
+            detonate();
         }
+    }
+
+    public void detonate(){
+        if (isBomb) {
+            isDetonated = true;
+            isBomb = false;
+            MapSite[] sides = getSides();
+            if (sides != null) {
+                for (MapSite m : sides) {
+                    if (m instanceof Wall) {
+                        Wall w = (Wall) m;
+                        w.setExploded(true);
+                        System.out.println("Room " + getRoomNr() + " detonate -> mark wall: dir=" + w.getDirection() + " at ("+w.getX()+","+w.getY()+")");
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean hasBomb(){
+        return isBomb;
+    }
+
+    public boolean isDetonated(){
+        return isDetonated;
     }
 
     public void draw(Image image) {
         super.draw(image);
-        if (isDetonated == false) {
+        if (!isDetonated) {
             if (isBomb) {
                 Graphics g = image.getGraphics();
-                g.drawString("B", getX() + MapSite.LENGTH / 2, getY() + MapSite.LENGTH / 2);
+                if (g != null) {
+                    g.setColor(Color.BLACK);
+                    g.drawString("B", getX() + MapSite.LENGTH / 2, getY() + MapSite.LENGTH / 2);
+                }
             }
         } else {
-            if (isBomb == true) {
-                isBomb = false;
-            }
+            // detonated: walls were already marked exploded in detonate()
+            // no additional filled markers inside room to avoid duplicate circles
         }
     }
 }

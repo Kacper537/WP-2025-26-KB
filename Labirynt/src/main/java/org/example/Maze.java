@@ -39,4 +39,11 @@ public class Maze {
             r.draw(image);
         }
     }
+
+    public Room getRoomByCoordinates(int x, int y){
+        for (Room r: maze){
+            if (r.getX() == x && r.getY() == y) return r;
+        }
+        return null;
+    }
 }

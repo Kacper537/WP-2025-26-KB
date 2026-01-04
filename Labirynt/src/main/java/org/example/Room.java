@@ -36,6 +36,14 @@ public class Room extends MapSite{
         sites[d.ordinal()] = mapSite;
     }
 
+    protected MapSite[] getSides(){
+        return sites;
+    }
+
+    public MapSite getSide(Directions d){
+        return sites[d.ordinal()];
+    }
+
     public int getNr(){
         return nr;
     }

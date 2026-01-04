@@ -58,7 +58,32 @@ public class App extends JFrame
             MapSite roomObj = maze.getRoomAt(i);
             if (roomObj instanceof RoomWithBomb) {
                 RoomWithBomb room = (RoomWithBomb) roomObj;
-                room.setDetonated();
+                // detonate this room
+                room.detonate();
+                // mark walls in neighboring rooms (correct opposite directions)
+                for (Directions d : Directions.values()) {
+                    int nx = room.getX();
+                    int ny = room.getY();
+                    switch (d) {
+                        case North -> ny = room.getY() - MapSite.LENGTH;
+                        case South -> ny = room.getY() + MapSite.LENGTH;
+                        case East -> nx = room.getX() + MapSite.LENGTH;
+                        case West -> nx = room.getX() - MapSite.LENGTH;
+                    }
+                    Room neighbor = maze.getRoomByCoordinates(nx, ny);
+                    if (neighbor != null) {
+                        Directions opp = switch (d) {
+                            case North -> Directions.South;
+                            case South -> Directions.North;
+                            case East -> Directions.West;
+                            case West -> Directions.East;
+                        };
+                        MapSite side = neighbor.getSide(opp);
+                        if (side instanceof Wall) {
+                            ((Wall) side).setExploded(true);
+                        }
+                    }
+                }
             }
         }
         maze.draw(image);
